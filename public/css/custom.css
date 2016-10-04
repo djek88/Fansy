@@ -1,0 +1,70 @@
+
+
+.answers{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  width: 340px;
+  float: right;
+  height: 100%;
+  position: absolute;
+  right: 20px;
+  bottom: 60px;
+  transition: .1s ease-out;
+  transition-delay: 0.5s;
+}
+
+.currentUser{
+  background: grey;
+}
+
+.timers{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  position: absolute;
+  top: 150px;
+  right: 0px;
+  z-index: 2000;
+}
+
+.div-stream-timer {
+  display: block;
+  text-align: left;
+  width: auto;
+  padding: 6px 12px 6px 6px;
+  background-color: #262932;
+  margin: 10px 0 0 0;
+  
+}
+
+.div-stream-timer .text-timer{
+  justify-content: flex-start;
+}
+
+
+.display-none{
+    height: 0;
+}
+
+
+.divider{
+  background-color: black;
+}
+
+.divider td{
+  padding: 1px !important; 
+}
+
+
+.overlay-notification {
+  margin-top: 20px
+}
+
+.text-timer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,30 @@
+{% extends "../layouts/default.twig" %}
+
+{% block content %}
+	<div ng-controller="AppController as app" >
+		<div ng-init="app.url = '{{ url }}'; app.game = '{{ stream.game.game }}'">
+			{% if stream %}
+				{% if user %}
+					{% include 'stream.twig' %}
+				{% else %}
+					{% include 'auth.twig' %}
+			{% endif %}
+			{% else %}
+				{% include 'landing.twig' %}
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+
+{% if not stream %}
+	{% block webflow %}
+    	<link href="/css/landing.css" rel="stylesheet" type="text/css">
+		<link href="/css/landing.webflow.css" rel="stylesheet" type="text/css">
+	{% endblock %}
+	
+  {% block webflowjs %}
+  <script src="/js/landing/modernizr.js" type="text/javascript"></script>
+  <script src="/js/landing/webflow.js" type="text/javascript"></script>
+  {% endblock %}
+{% endif %}

@@ -1,0 +1,44 @@
+{% extends "../layouts/default.twig" %}
+
+
+{% block css %}
+  <link href="/css/dashboard.css" rel="stylesheet" type="text/css">
+  
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+      <div class="col-sm-12">
+        <h3>Streams <a href="/keystone/streams/">New</a></h3>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Game</th>
+                <th>Streamer</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for stream in streams %}
+                {% if stream %}
+                  <tr class="{% if stream.status=='live' %}success{% endif %}{% if stream.status=='finished' %}grey{% endif %}" >
+                    <td>{{ stream.game.game }}</td>
+                    <td>{{ stream.streamer.name }}</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="...">
+                        <a href="/dashboard/{{ stream.id }}/error/0" class="btn btn-default">Dashboard</a>
+                        <a  href="/keystone/streams/{{ stream.id }}" class="btn btn-default" target="_blank">Edit</a>
+                      </div>
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+		</div>
+	</div>
+{% endblock %}
