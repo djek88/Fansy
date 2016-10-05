@@ -8,7 +8,7 @@
 					{% include 'stream.twig' %}
 				{% else %}
 					{% include 'auth.twig' %}
-			{% endif %}
+				{% endif %}
 			{% else %}
 				{% include 'landing.twig' %}
 			{% endif %}
@@ -19,12 +19,12 @@
 
 {% if not stream %}
 	{% block webflow %}
-    	<link href="/css/landing.css" rel="stylesheet" type="text/css">
+		<link href="/css/landing.css" rel="stylesheet" type="text/css">
 		<link href="/css/landing.webflow.css" rel="stylesheet" type="text/css">
 	{% endblock %}
-	
-  {% block webflowjs %}
-  <script src="/js/landing/modernizr.js" type="text/javascript"></script>
-  <script src="/js/landing/webflow.js" type="text/javascript"></script>
-  {% endblock %}
+
+	{% block webflowjs %}
+		<script src="/js/vendor/modernizr.js" type="text/javascript"></script>
+		<script src="/js/vendor/webflow.js" type="text/javascript"></script>
+	{% endblock %}
 {% endif %}

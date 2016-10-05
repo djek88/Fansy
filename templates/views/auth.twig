@@ -1,31 +1,33 @@
 <div class="overlay-auth">
-    <div class="container-logo w-container"><img src="images/logo.png" width="118">
-    </div>
-    <div class="container-help w-container">
-      <div class="w-row">
-        <div class="column-help-image w-col w-col-6"><img sizes="100vw" src="images/promo-amaz.png" srcset="images/promo-amaz-p-500x316.png 500w, images/promo-amaz-p-800x505.png 800w, images/promo-amaz.png 925w">
-        </div>
-        <div class="column-help-text w-col w-col-6">
-          <h1 class="h1">How to play</h1>
-          <p class="text-help">1. Watch the stream
-            <br>2. At random moments question will popup
-            <br>3. Predict what happens next in the game
-            <br>4. Wait for results &amp; compete with others</p>
-          <div>
-            <div class="w-form">
-              <form class="form-nickname" id="wf-form-Nickname-Form" name="wf-form-Nickname-Form">
-                <input autofocus="autofocus" class="textfield-nickname w-input" id="Nickname-2" maxlength="256" name="Nickname" placeholder="Enter your nickname" required="required" type="text">
-                <input ng-click="app.auth();" class="button-overlay w-button" data-wait="Please wait..." value="Start playing!">
-              </form>
-              <div class="form-success w-form-done">
-                <div class="text-basic">Thank you! Your submission has been received!</div>
-              </div>
-              <div class="form-error w-form-fail">
-                <div class="text-basic">This&nbsp;nickname&nbsp;has&nbsp;already&nbsp;been&nbsp;taken...</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container-logo w-container"><img src="images/logo.png" width="118"></div>
+
+	<div class="container-help w-container">
+		<div class="w-row">
+			<div class="column-help-image w-col w-col-6"><img sizes="100vw" src="images/promo-amaz.png" srcset="images/promo-amaz-p-500x316.png 500w, images/promo-amaz-p-800x505.png 800w, images/promo-amaz.png 925w"></div>
+
+			<div class="column-help-text w-col w-col-6">
+				<h1 class="h1">How to play</h1>
+				<p class="text-help">
+					1. Watch the stream
+					<br>2. At random moments question will popup
+					<br>3. Predict what happens next in the game
+					<br>4. Wait for results &amp; compete with others
+				</p>
+				<div>
+					<div class="w-form">
+						<form class="form-nickname" id="wf-form-Nickname-Form" name="wf-form-Nickname-Form">
+							<input autofocus="autofocus" class="textfield-nickname w-input" id="Nickname-2" maxlength="256" name="Nickname" placeholder="Enter your nickname" required="required" type="text">
+							<input ng-click="app.auth();" class="button-overlay w-button" data-wait="Please wait..." value="Start playing!">
+						</form>
+						<div class="form-success w-form-done">
+							<div class="text-basic">Thank you! Your submission has been received!</div>
+						</div>
+						<div class="form-error w-form-fail">
+							<div class="text-basic">This&nbsp;nickname&nbsp;has&nbsp;already&nbsp;been&nbsp;taken...</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

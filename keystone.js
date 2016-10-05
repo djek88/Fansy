@@ -12,9 +12,8 @@ var randtoken = require('rand-token');
 // Initialise Keystone with your project's configuration.
 // See http://keystonejs.com/guide/config for available options
 // and documentation.
-var mixpanel = Mixpanel.init('c4b9a4c39383dbad6336bcca4b258778');
 
-keystone.set('mixpanel', mixpanel);
+keystone.set('mixpanel', Mixpanel.init('c4b9a4c39383dbad6336bcca4b258778'));
 
 keystone.init({
 	'name': 'fansy.tv',
@@ -62,7 +61,7 @@ keystone.set('nav', {
 
 // Start Keystone to connect to your database and initialise the web server
 keystone.start({
-	onHttpServerCreated: function(){
+	onHttpServerCreated: function() {
 		keystone.set('io', io.listen(keystone.httpServer));
 		keystone.set('users', {});
 
@@ -73,6 +72,7 @@ keystone.start({
 		var users = keystone.get('users');
 
 		sio.sockets.on('connection', function (socket) {
+			console.log('NEW SOCKET CONNECTED');
 
 			socket.on('question', function (data) {
 				User.model.findOne({ 'token': data.token }).exec(function (err, user) {

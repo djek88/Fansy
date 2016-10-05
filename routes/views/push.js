@@ -5,15 +5,15 @@ var Question = keystone.list('Question');
 var Stream = keystone.list('Stream');
 var request = require('superagent');
 function parseCookies (request) {
-    var list = {},
-        rc = request.headers.cookie;
+	var list = {},
+		rc = request.headers.cookie;
 
-    rc && rc.split(';').forEach(function( cookie ) {
-        var parts = cookie.split('=');
-        list[parts.shift().trim()] = decodeURI(parts.join('='));
-    });
+	rc && rc.split(';').forEach(function( cookie ) {
+		var parts = cookie.split('=');
+		list[parts.shift().trim()] = decodeURI(parts.join('='));
+	});
 
-    return list;
+	return list;
 }
 
 
@@ -54,12 +54,12 @@ exports = module.exports = function (req, res) {
 					adminTimer = new Date().getTime() + number*60*1000;
 					timing = true;
 					Question.model.find()
-	            		.where({'stream': sid })
-	            		.where({'timing': true })
-	            		.where({'status': 'active'})
-	            		.exec(function (err, questions) {
-	            			socket.emit('timer', {questions:questions, time: new Date().getTime()});
-		            });
+						.where({'stream': sid })
+						.where({'timing': true })
+						.where({'status': 'active'})
+						.exec(function (err, questions) {
+							socket.emit('timer', {questions:questions, time: new Date().getTime()});
+					});
 				}
 				
 				

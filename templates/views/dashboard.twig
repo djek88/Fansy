@@ -1,109 +1,99 @@
 {% extends "../layouts/default.twig" %}
 
 {% block css %}
-  <link href="/css/dashboard.css" rel="stylesheet" type="text/css">
-  
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="/css/dashboard.css" rel="stylesheet" type="text/css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block js %}
-  <script src="/js/dashboard.js"></script>
+	<script src="/js/dashboard.js"></script>
 {% endblock %}
 
 
 {% block content %}
-
 	<div class="container">
-	  
-    <h2>
-      <a href="/dashboard"><</a>
-      {{ game }} - {{ stream.streamer.name }}{% if stream.status == 'live' %} - live {% endif %} 
-      {% if  error %} <p style="color:red;">There is an active stream. Start banned</p> {% endif %}
-      
-      {% if stream.status == 'new' %} - <a href="/dashboard/{{ stream.id }}/start" class="btn btn-default">Start</a> {% endif %}
-      {% if stream.status == 'live' %} - <a href="/dashboard/{{ stream.id }}/finish" class="btn btn-default">Finish</a> {% endif %}
-    </h2>
+		<h2>
+			<a href="/dashboard"><</a>
+			{{ game }} - {{ stream.streamer.name }}{% if stream.status == 'live' %} - live {% endif %}
+			{% if error %} <p style="color:red;">There is an active stream. Start banned</p> {% endif %}
+			{% if stream.status == 'new' %} - <a href="/dashboard/{{ stream.id }}/start" class="btn btn-default">Start</a> {% endif %}
+			{% if stream.status == 'live' %} - <a href="/dashboard/{{ stream.id }}/finish" class="btn btn-default">Finish</a> {% endif %}
+		</h2>
 		<div class="row">
-		    <div class="col-sm-5">
-		      <h3>Templates <a href="/keystone/templates/">New</a></h3>
-		        <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Text</th>
-                  <th>Timer</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for template in templates['Early'] %}
-                  <tr>
-                    <td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
-                    <td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-                    <td>
-                        <a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a>
-                    </td>
-                  </tr>
-                {% endfor %}  
-                  <tr class="divider"><td></td><td></td><td></td></tr>
-                {% for template in templates['Any'] %}
-                  <tr>
-                    <td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
-                    <td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-                    <td>
-                        <a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a>
-                    </td>
-                  </tr>
-                {% endfor %}  
-                  <tr class="divider"><td></td><td></td><td></td></tr>
-                {% for template in templates['Mid'] %}
-                  <tr>
-                    <td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
-                    <td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-                    <td>
-                        <a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a>
-                    </td>
-                  </tr>
-                {% endfor %}  
-              </tbody>
-            </table>
-		      </div>
-		    <div class="col-sm-7">
-		        <h3>Question</h3>
-		        <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Text</th>
-                  <th>Timer</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for question in questions %}
-                  <script>
-                  
-                  </script>
-                  <tr>
-                    <td>{{ question.text }}</td>
-                    <td id="timer{{ question.id }}"></td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="...">
-                        <a href="/dashboard/{{ stream.id }}/question/option1/{{ question.id }}" class="btn btn-default">{{ stream.option1 }}</a>
-                        <a href="/dashboard/{{ stream.id }}/question/option2/{{ question.id }}"  class="btn btn-default">{{ stream.option2 }}</a>
-                        <a href="/dashboard/{{ stream.id }}/question/cancel/{{ question.id }}" class="btn btn-default">Cancel</a>
-                      </div>
-                    </td>
-                    
-                    {% if question.adminTimer != null %}
-                      <script>
-                        initializeClock('timer{{ question.id }}',  {{ question.countdown }})
-                      </script>
-                    {% endif %}
-                    
-                  </tr>
-                {% endfor %}  
-              </tbody>
-            </table>
-		      </div>
+			<div class="col-sm-5">
+				<h3>Templates <a href="/keystone/templates/">New</a></h3>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Text</th>
+							<th>Timer</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for template in templates['Early'] %}
+							<tr>
+								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
+								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
+							</tr>
+						{% endfor %}
+							<tr class="divider"><td></td><td></td><td></td></tr>
+						{% for template in templates['Any'] %}
+							<tr>
+								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
+								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
+							</tr>
+						{% endfor %}
+							<tr class="divider"><td></td><td></td><td></td></tr>
+						{% for template in templates['Mid'] %}
+							<tr>
+								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
+								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-sm-7">
+				<h3>Question</h3>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Text</th>
+							<th>Timer</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for question in questions %}
+							<script>
+
+							</script>
+							<tr>
+								<td>{{ question.text }}</td>
+								<td id="timer{{ question.id }}"></td>
+								<td>
+									<div class="btn-group" role="group" aria-label="...">
+										<a href="/dashboard/{{ stream.id }}/question/option1/{{ question.id }}" class="btn btn-default">{{ stream.option1 }}</a>
+										<a href="/dashboard/{{ stream.id }}/question/option2/{{ question.id }}"  class="btn btn-default">{{ stream.option2 }}</a>
+										<a href="/dashboard/{{ stream.id }}/question/cancel/{{ question.id }}" class="btn btn-default">Cancel</a>
+									</div>
+								</td>
+
+								{% if question.adminTimer != null %}
+									<script>
+										initializeClock('timer{{ question.id }}',  {{ question.countdown }})
+									</script>
+								{% endif %}
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 {% endblock %}

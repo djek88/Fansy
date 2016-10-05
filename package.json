@@ -6,8 +6,7 @@
   "main": "keystone.js",
   "scripts": {
     "lint": "eslint .",
-    "start": "supervisor keystone",
-    "prod": "NODE_ENV=production node keystone"
+    "start": "supervisor keystone"
   },
   "dependencies": {
     "async": "^1.5.0",

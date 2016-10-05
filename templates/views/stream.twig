@@ -1,131 +1,127 @@
 
 <div class="core w-clearfix" id="core" ng-init="app.stream = '{{ stream.id }}'">
-    <div class="stream-section">
-      <div class="timers">
-        <div ng-repeat="time in app.timers | orderBy:'-countdown'" class="div-stream-timer">
-          <div class="text-stream-timer">{$ time.goal $}
-            <br><timer class="text-timer" countdown="time.countdown" interval="1000">{$ minutes $}:{$ seconds $}</timer></div>
-        </div>
-      </div>
-      
-      
-      <div  ng-show="app.showQuestion"  id="question" class="animate-if overlay-question">
-        <div class="text-question">{$ app.question.message $}</div>
-        <div class="form-question w-form">
-          <form id="email-form" name="email-form">
-            <div class="div-question-timer">
-              <timer class="text-timer" countdown="1" interval="1000" ng-init="app.countdown=countdown">{$countdown$}</timer>
-              <div class="text-timer timerFind"></div>
-            </div><a ng-click="app.answer(1, '{{ stream.option1 }}')"  class="button-question-1 w-button" href="#">{{ stream.option1 }}</a><a ng-click="app.answer(2, '{{ stream.option2 }}')" class="button-question-2 w-button" href="#">{{ stream.option2 }}</a><a ng-click="app.answer(0)" class="button-question-close w-button" href="#">X</a>
-          </form>
-          <div class="w-form-done"></div>
-          <div class="w-form-fail"></div>
-        </div>
-      </div>
+	<div class="stream-section">
+		<div class="timers">
+			<div ng-repeat="time in app.timers | orderBy:'-countdown'" class="div-stream-timer">
+				<div class="text-stream-timer">
+					{$ time.goal $}<br>
+					<timer class="text-timer" countdown="time.countdown" interval="1000">{$ minutes $}:{$ seconds $}</timer>
+				</div>
+			</div>
+		</div>
 
-        <a ng-click="app.sidebarexpand()" class="user-sidebar-expand w-inline-block" data-ix="expand-user-sidebar" href="#">
-          <img class="image-arrow" data-ix="expand-user-sidebar" src="images/arrow2.png">
-        </a>
-        <a ng-click="app.sidebarcollapse()" class="user-sidebar-collapse w-inline-block" data-ix="collapse-user-sidebar" href="#">
-          <img class="image-arrow" data-ix="collapse-user-sidebar" height="20" src="images/arrow.png">
-        </a>
-      
-      
-      <div class="answers" ng-class="app.answers.length == 0 ? 'display-none' : ''">
-        
-        <div ng-animate="'animate'" ng-repeat="answer in app.answers track by $index" class="overlay-notification animate">
-          <div ng-if="answer.status === 'cancelled'" class="text-notification-cancelled">
-              <strong>Question cancelled</strong>
-          </div>
-          
-            <div ng-if="answer.status === 'true'"  class="text-notification-won">
-                <strong>You earn 2000 points</strong>
-            </div>
-          
-            <div ng-if="answer.status === 'false'" class="text-notification-lost">
-                <strong>You lost 2000 points</strong>
-            </div>
-            <div class="text-notification" ng-if="answer.status !== 'cancelled'">“{$ answer.question.text $}” as “{$ answer.answerText $}”</div>
-            <div class="text-notification" ng-if="answer.status === 'cancelled'">“{$ answer.question.text $}”</div>
-        </div>
-        
-      </div>
-      
-      <div class="twitch-embed w-embed w-iframe">
-        <iframe 
-    			src="http://player.twitch.tv/?channel={{ stream.url }}" 
-    			frameborder="0" 
-    			scrolling="no"
-    			id="twitch">
-    		</iframe>
-      </div>
-      
-      <a ng-click="app.fullexpand();" class="linkblock-expand w-clearfix w-inline-block" data-ix="fullscreen-expand" href="#" id="fullscreen-expand">
-        <img class="image-fullscreen" sizes="20px" src="images/expand.png" srcset="images/expand.png 500w, images/expand.png 600w">
-      </a>
-      <a ng-click="app.fullcollapse();" class="linkblock-collapse w-clearfix w-inline-block" data-ix="fullscreen-collapse" href="#" id="fullscreen-collapse">
-        <img class="image-fullscreen" sizes="100vw" src="images/collapse.png" srcset="images/collapse.png 500w, images/collapse.png 599w">
-      </a>
-    </div>
-    <div class="user-section" data-ix="expand-user-sidebar">
-      <div class="user-profile">
-        <div class="w-row">
-          <div class="column-profile w-col w-col-8 w-col-small-8 w-col-tiny-8">
-            <div class="text-player" ng-init="app.username='{{ user.username }}'">{{ user.username }}</div>
-          </div>
-          <div class="column-profile w-clearfix w-col w-col-4 w-col-small-4 w-col-tiny-4"><a ng-click="app.logout()" class="link-logout" href="">Logout</a>
-          </div>
-        </div>
-      </div>
-      <div  ng-if="app.leaders.length > 0" class="user-leaderboard">
-        <h3 class="h4">Stream Leaderboard</h3>
-          <div ng-class="leader.username == app.username ? 'div-you' : 'div-player'" ng-repeat="leader in app.leaders | limitTo: 10">
-			      <div class="row-leaderboard w-row">
-			        <div class="w-col w-col-2 w-col-medium-2 w-col-small-2 w-col-tiny-2">
-			          <div class="text-position">{$ leader.position + 1 $}</div>
-			        </div>
-			        <div class="w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
-			          <div ng-if="leader.username == app.username" class="text-player">You</div>
-			          <div ng-if="leader.username != app.username" class="text-player">{$ leader.username $} </div>
-			        </div>
-			        <div class="w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
-			          <div class="text-basic w-clearfix"><strong class="text-points">{$ leader.amount $}</strong>
-			          </div>
-			        </div>
-			     </div>
-			    </div>
-      </div>
-      
-      <div class="user-history">
-        <h3 ng-if="app.activePredictions.length > 0"  class="h4">Active Predictions</h3>
-        <div ng-if="app.activePredictions.length > 0" ng-repeat="prediction in app.activePredictions" class="div-prediction">
-          <div class="text-notification">“{$ prediction.question.text $}” as “{$ prediction.answerText $}”</div>
-        </div>
-        
-        <h3 ng-if="app.finishedPredictions.length > 0" class="h4">Finished Predictions</h3>
-        <div ng-if="app.finishedPredictions.length > 0 && prediction.status != 'cancelled'" ng-repeat="prediction in app.finishedPredictions" class="div-prediction">
-          
-          {#<div ng-if="prediction.status === 'cancelled'" class="text-notification-cancelled">#}
-          {#  <strong>Question cancelled</strong>#}
-          {#</div>#}
-          
-          <div ng-if="prediction.status === 'true'"  class="text-notification-won">
-            <strong>You earn 2000 points</strong>
-          </div>
-          
-          <div ng-if="prediction.status === 'false'" class="text-notification-lost">
-            <strong>You lost 2000 points</strong>
-          </div>
-          <div class="text-notification" ng-if="prediction.status !== 'cancelled'">“{$ prediction.question.text $}” as “{$ prediction.answerText $}”</div>
-          {#<div class="text-notification" ng-if="prediction.status === 'cancelled'">“{$ prediction.question.text $}”</div>#}
-          
-        </div>
-       
-       
-       
-       
-       
-       
-      </div>
-    </div>
-  </div>
+		<div ng-show="app.showQuestion" id="question" class="animate-if overlay-question">
+			<div class="text-question">{$ app.question.message $}</div>
+
+			<div class="form-question w-form">
+				<form id="email-form" name="email-form">
+					<div class="div-question-timer">
+						<timer class="text-timer" countdown="1" interval="1000" ng-init="app.countdown=countdown">{$countdown$}</timer>
+						<div class="text-timer timerFind"></div>
+					</div>
+					<a ng-click="app.answer(1, '{{ stream.option1 }}')" class="button-question-1 w-button" href="#">{{ stream.option1 }}</a>
+					<a ng-click="app.answer(2, '{{ stream.option2 }}')" class="button-question-2 w-button" href="#">{{ stream.option2 }}</a>
+					<a ng-click="app.answer(0)" class="button-question-close w-button" href="#">X</a>
+				</form>
+				<div class="w-form-done"></div>
+				<div class="w-form-fail"></div>
+			</div>
+		</div>
+
+		<a ng-click="app.sidebarexpand()" class="user-sidebar-expand w-inline-block" data-ix="expand-user-sidebar" href="#">
+			<img class="image-arrow" data-ix="expand-user-sidebar" src="images/arrow2.png">
+		</a>
+		<a ng-click="app.sidebarcollapse()" class="user-sidebar-collapse w-inline-block" data-ix="collapse-user-sidebar" href="#">
+			<img class="image-arrow" data-ix="collapse-user-sidebar" height="20" src="images/arrow.png">
+		</a>
+
+		<div class="answers" ng-class="app.answers.length == 0 ? 'display-none' : ''">
+			<div ng-animate="'animate'" ng-repeat="answer in app.answers track by $index" class="overlay-notification animate">
+				<div ng-if="answer.status === 'cancelled'" class="text-notification-cancelled">
+					<strong>Question cancelled</strong>
+				</div>
+
+				<div ng-if="answer.status === 'true'"  class="text-notification-won">
+					<strong>You earn 2000 points</strong>
+				</div>
+				<div ng-if="answer.status === 'false'" class="text-notification-lost">
+					<strong>You lost 2000 points</strong>
+				</div>
+				<div class="text-notification" ng-if="answer.status !== 'cancelled'">“{$ answer.question.text $}” as “{$ answer.answerText $}”</div>
+				<div class="text-notification" ng-if="answer.status === 'cancelled'">“{$ answer.question.text $}”</div>
+			</div>
+		</div>
+
+		<div class="twitch-embed w-embed w-iframe">
+			<iframe src="http://player.twitch.tv/?channel={{ stream.url }}"
+				frameborder="0"
+				scrolling="no"
+				id="twitch"></iframe>
+		</div>
+
+		<a ng-click="app.fullexpand();" class="linkblock-expand w-clearfix w-inline-block" data-ix="fullscreen-expand" href="#" id="fullscreen-expand">
+			<img class="image-fullscreen" sizes="20px" src="images/expand.png" srcset="images/expand.png 500w, images/expand.png 600w">
+		</a>
+		<a ng-click="app.fullcollapse();" class="linkblock-collapse w-clearfix w-inline-block" data-ix="fullscreen-collapse" href="#" id="fullscreen-collapse">
+			<img class="image-fullscreen" sizes="100vw" src="images/collapse.png" srcset="images/collapse.png 500w, images/collapse.png 599w">
+		</a>
+	</div>
+
+	<div class="user-section" data-ix="expand-user-sidebar">
+		<div class="user-profile">
+			<div class="w-row">
+				<div class="column-profile w-col w-col-8 w-col-small-8 w-col-tiny-8">
+					<div class="text-player" ng-init="app.username='{{ user.username }}'">{{ user.username }}</div>
+				</div>
+				<div class="column-profile w-clearfix w-col w-col-4 w-col-small-4 w-col-tiny-4">
+					<a ng-click="app.logout()" class="link-logout" href="">Logout</a>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="app.leaders.length > 0" class="user-leaderboard">
+			<h3 class="h4">Stream Leaderboard</h3>
+
+			<div ng-class="leader.username == app.username ? 'div-you' : 'div-player'" ng-repeat="leader in app.leaders | limitTo: 10">
+				<div class="row-leaderboard w-row">
+					<div class="w-col w-col-2 w-col-medium-2 w-col-small-2 w-col-tiny-2">
+						<div class="text-position">{$ leader.position + 1 $}</div>
+					</div>
+					<div class="w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+						<div ng-if="leader.username == app.username" class="text-player">You</div>
+						<div ng-if="leader.username != app.username" class="text-player">{$ leader.username $}</div>
+					</div>
+					<div class="w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+						<div class="text-basic w-clearfix"><strong class="text-points">{$ leader.amount $}</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="user-history">
+			<h3 ng-if="app.activePredictions.length > 0"  class="h4">Active Predictions</h3>
+			<div ng-if="app.activePredictions.length > 0" ng-repeat="prediction in app.activePredictions" class="div-prediction">
+				<div class="text-notification">“{$ prediction.question.text $}” as “{$ prediction.answerText $}”</div>
+			</div>
+
+			<h3 ng-if="app.finishedPredictions.length > 0" class="h4">Finished Predictions</h3>
+			<div ng-if="app.finishedPredictions.length > 0 && prediction.status != 'cancelled'" ng-repeat="prediction in app.finishedPredictions" class="div-prediction">
+				{# <div ng-if="prediction.status === 'cancelled'" class="text-notification-cancelled"> #}
+				{# <strong>Question cancelled</strong> #}
+				{# </div> #}
+
+				<div ng-if="prediction.status === 'true'"  class="text-notification-won">
+					<strong>You earn 2000 points</strong>
+				</div>
+
+				<div ng-if="prediction.status === 'false'" class="text-notification-lost">
+					<strong>You lost 2000 points</strong>
+				</div>
+
+				<div class="text-notification" ng-if="prediction.status !== 'cancelled'">“{$ prediction.question.text $}” as “{$ prediction.answerText $}”</div>
+				{#<div class="text-notification" ng-if="prediction.status === 'cancelled'">“{$ prediction.question.text $}”</div>#}
+			</div>
+		</div>
+	</div>
+</div>
