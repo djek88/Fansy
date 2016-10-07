@@ -2,18 +2,7 @@ var keystone = require('keystone');
 var Stream = keystone.list('Stream');
 var User = keystone.list('User');
 
-function parseCookies(req) {
-	var result = {};
-	var cookie = req.headers.cookie;
-	var cookiesArr = cookie && cookie.split(';');
-
-	cookiesArr.forEach(function(cookie) {
-		var parts = cookie.split('=');
-		result[parts.shift().trim()] = decodeURI(parts.join('='));
-	});
-
-	return result;
-}
+var parseCookies = require('../../lib/shared').parseCookies;
 
 exports = module.exports = function(req, res) {
 	var view = new keystone.View(req, res);
@@ -21,7 +10,7 @@ exports = module.exports = function(req, res) {
 	var cookies = parseCookies(req);
 	var mixpanel = keystone.get('mixpanel');
 
-	locals.url = process.env.URL;
+	locals.streamSocketUrl = process.env.URL + 'stream';
 	locals.mixpanel = process.env.MIXPANEL;
 
 	view.on('init', function (next) {

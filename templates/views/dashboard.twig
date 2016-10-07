@@ -9,7 +9,6 @@
 	<script src="/js/dashboard.js"></script>
 {% endblock %}
 
-
 {% block content %}
 	<div class="container">
 		<h2>
@@ -70,9 +69,6 @@
 					</thead>
 					<tbody>
 						{% for question in questions %}
-							<script>
-
-							</script>
 							<tr>
 								<td>{{ question.text }}</td>
 								<td id="timer{{ question.id }}"></td>
@@ -86,7 +82,9 @@
 
 								{% if question.adminTimer != null %}
 									<script>
-										initializeClock('timer{{ question.id }}',  {{ question.countdown }})
+										document.addEventListener("DOMContentLoaded", function() {
+											initializeClock('timer{{ question.id }}', {{ question.countdown }});
+										});
 									</script>
 								{% endif %}
 							</tr>

@@ -1,19 +1,17 @@
 {% extends "../layouts/default.twig" %}
 
 {% block content %}
-	<div ng-controller="AppController as app" >
-		<div ng-init="app.url = '{{ url }}'; app.game = '{{ stream.game.game }}'">
-			{% if stream %}
-				{% if user %}
-					{% include 'stream.twig' %}
-				{% else %}
-					{% include 'auth.twig' %}
-				{% endif %}
+	{% if stream %}
+		<div ng-controller="AppController as app" ng-init="app.socketUrl = '{{ streamSocketUrl }}'; app.game = '{{ stream.game.game }}'">
+			{% if user %}
+				{% include 'stream.twig' %}
 			{% else %}
-				{% include 'landing.twig' %}
+				{% include 'auth.twig' %}
 			{% endif %}
 		</div>
-	</div>
+	{% else %}
+		{% include 'landing.twig' %}
+	{% endif %}
 {% endblock %}
 
 

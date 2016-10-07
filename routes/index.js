@@ -51,12 +51,19 @@ var routes = {
 exports = module.exports = function (app) {
 	// Views
 	app.get('/', routes.views.index);
-	app.get('/front/:sid/question/:type/:id', routes.views.front);
 	app.get('/dashboard/', middleware.requireUser, routes.views.dashboards);
-	app.post('/dashboard/template', middleware.requireUser, routes.views.template);
+
 	app.get('/dashboard/:sid/error/:error', middleware.requireUser, routes.views.dashboard);
+
 	app.get('/dashboard/:sid/finish', middleware.requireUser, routes.views.finish);
 	app.get('/dashboard/:sid/start', middleware.requireUser, routes.views.start);
 	app.get('/dashboard/:sid/push/:id', middleware.requireUser, routes.views.push);
+	// route for handle admin answer for question
 	app.get('/dashboard/:sid/question/:type/:id', middleware.requireUser, routes.views.question);
+
+	// route for auto close question after question timer finished
+	app.get('/front/:sid/question/:type/:id', routes.views.question);
+
+	// For modify template on dashboard page
+	app.post('/dashboard/template', middleware.requireUser, routes.views.template);
 };

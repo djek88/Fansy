@@ -26,10 +26,6 @@
 		}
 	</style>
 	{% block css %}{% endblock %}
-</head>
-
-<body class="body ng-cloak" ng-app="app">
-	{% block content %}{% endblock %}
 
 	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
@@ -40,9 +36,6 @@
 	<script src="//platform.twitter.com/oct.js" type="text/javascript"></script>
 	<script src="/js/vendor/angular-timer.min.js" type="text/javascript"></script>
 	<script src="/js/vendor/modernizr.js" type="text/javascript"></script>
-
-	<script src="/js/app.js" type="text/javascript"></script>
-	{% block js %}{% endblock %}
 
 	{% if stream %}
 		<!-- start Mixpanel -->
@@ -61,16 +54,24 @@
 
 	<script type="text/javascript">WebFont.load({ google: { families: ["Source Sans Pro:regular,600,700","Muli:300,regular"] } });</script>
 
+	<script src="/js/app.js" type="text/javascript"></script>
+	<script src="/js/app-socket-io.service.js" type="text/javascript"></script>
+	{% block js %}{% endblock %}
+</head>
+
+<body class="body ng-cloak" ng-app="app">
+	{% block content %}{% endblock %}
+
+	{% if (user is defined) and (user.canAccessKeystone) %}
+		<script src="/keystone/js/content/editor.js"></script>
+	{% endif %}
+
 	{% block webflowjs %}
 		<script src="/js/vendor/webflow.js" type="text/javascript"></script>
 		<script src="/js/array.js" type="text/javascript"></script>
 		<script src="/js/main.js" type="text/javascript"></script>
 		<script src="/js/cookie.js" type="text/javascript"></script>
 	{% endblock %}
-
-	{% if (user is defined) and (user.canAccessKeystone) %}
-		<script src="/keystone/js/content/editor.js"></script>
-	{% endif %}
 
 	<noscript>
 		<img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id=nvizu&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
