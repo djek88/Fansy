@@ -38,6 +38,8 @@ module.exports = function (req, res) {
 					async.eachSeries(predictions, predictionHandler, function(err) {
 						if (err) return;
 
+						streamNsp.emit('close_question', freshQuestion.id);
+
 						for (var key in streamNsp.connected) {
 							(function(socket) {
 								User.model.findOne({'token': socket.token}).exec(function (err, user) {

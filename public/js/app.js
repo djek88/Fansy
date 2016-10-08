@@ -112,16 +112,14 @@ angular
 					}
 
 					if (data.type === 'success') {
-						mixpanel.track('onb-auth-done', {
-							distinct_id: data.username
-						});
+						mixpanel.track('onb-auth-done', {distinct_id: data.username});
 
 						$('.form-success').show();
 
 						setCookie('fansy.token', data.token);
 						setCookie('fansy.username', data.username);
 
-						setTimeout(function(){
+						$timeout(function(){
 							location.href = '/';
 						}, 2000);
 					}
@@ -148,6 +146,14 @@ angular
 					app.questionTimeoutId = $timeout(function() {
 						app.showQuestion = false;
 					}, (app.question.timer - 1) * 1000);
+				});
+
+				socket.on("close_question", function(id) {
+					console.log("CLOSE_QUESTION", id);
+
+					if (app.showQuestion && app.question.id == id) {
+						app.showQuestion = false;
+					}
 				});
 
 				socket.on("answer", function(answer) {
@@ -213,29 +219,35 @@ angular
 			location.href = '/';
 		};
 
+		app.fullscreen = false;
+		app.toggleFullScreen = function() {
+			mixpanel.track(
+				(app.fullscreen ? 'ux-full-collapse' : 'ux-full-expand'),
+				{distinct_id: getCookie('fansy.username')}
+			);
 
-
-		app.fullexpand = function() {
-			mixpanel.track('ux-full-expand', {
-				distinct_id: getCookie('fansy.username')
-			});
+			app.fullscreen = !app.fullscreen;
+			recalculateStreamWidth();
 		}
 
-		app.fullcollapse = function() {
-			mixpanel.track('ux-full-collapse', {
-				distinct_id: getCookie('fansy.username')
-			});
-		}
+		app.isLeaderBoard = true;
+		app.toggleLeaderBoard = function() {
+			mixpanel.track(
+				(app.isLeaderBoard ? 'ux-sidebar-collapse' : 'ux-sidebar-expand'),
+				{distinct_id: getCookie('fansy.username')}
+			);
 
-		app.sidebarexpand = function() {
-			mixpanel.track('ux-sidebar-expand', {
-				distinct_id: getCookie('fansy.username')
-			});
-		}
+			app.isLeaderBoard = !app.isLeaderBoard;
+			recalculateStreamWidth();
+		};
 
-		app.sidebarcollapse = function() {
-			mixpanel.track('ux-sidebar-collapse', {
-				distinct_id: getCookie('fansy.username')
-			});
+		function recalculateStreamWidth() {
+			var streamSection = document.getElementsByClassName('stream-section')[0];
+
+			if (app.fullscreen) {
+				streamSection.style.width = app.isLeaderBoard ? '70%' : '100%';
+			} else {
+				streamSection.style.width = app.isLeaderBoard ? '60%' : '100%';
+			}
 		}
 	});

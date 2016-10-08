@@ -46,16 +46,16 @@ exports = module.exports = function (req, res) {
 							.where('stream', locals.stream.id)
 							.where('status', 'active')
 							.sort('-updated_at')
-							.exec(function (err, results) {
+							.exec(function (err, questions) {
 								if (err) return res.err(err);
 
-								locals.questions = results;
-								locals.questions.forEach(function(question) {
+								questions.forEach(function(question) {
 									if (question.adminTimer) {
 										question.countdown = question.adminTimer - new Date().getTime();
 									}
 								});
 
+								locals.questions = questions;
 								next();
 							});
 					});

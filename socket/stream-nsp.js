@@ -11,7 +11,7 @@ module.exports = function(io) {
 	var users = keystone.get('users');
 
 	streaNsp.on('connection', function(socket) {
-		console.log('user connected to stream nsp, connected sockets:', Object.keys(streaNsp.connected).length);
+		console.log('USER CONNECTED to stream nsp, connected sockets:', Object.keys(streaNsp.connected).length);
 
 		socket.on('open', function(data) {
 			socket.token = data.token;
@@ -79,7 +79,7 @@ module.exports = function(io) {
 					})
 					.save(function(err) {
 						shared.getPredictionsByStreamId(data.streamId, function(err, predictions) {
-							socket.emit('leader', predictions);
+							streaNsp.emit('leader', predictions);
 						});
 
 						shared.getActivePredictions(user.id, data.streamId, function(err, predictions) {

@@ -31,8 +31,6 @@ keystone.init({
 	'session': true,
 	'auth': true,
 	'user model': 'Admin',
-
-	//'mongo':'http://localhost:27017'
 });
 
 // Load your project's Models

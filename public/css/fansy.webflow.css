@@ -407,8 +407,8 @@ body {
   position: absolute;
   top: 0px;
   right: 0px;
+
   z-index: 2000;
-  display: none;
   width: 100px;
   height: 70px;
 }
@@ -515,7 +515,6 @@ body {
   right: 5px;
   bottom: 5px;
   z-index: 1000;
-  display: none;
   width: 65px;
   padding: 10px;
   background-color: #000;

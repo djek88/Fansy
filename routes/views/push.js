@@ -62,7 +62,7 @@ module.exports = function(req, res) {
 				}).save(function(err, freshQuestion) {
 					// set handler on "question time finished" for auto close question
 					if (questionTimer) {
-						var url = process.env.URL + 'front/' + sid + '/question/option2/' + freshQuestion.id;
+						var url = process.env.IP + ':' + process.env.PORT + '/front/' + sid + '/question/option2/' + freshQuestion.id;
 						setTimeout(function() {
 							request.get(url).end(function(){});
 						}, questionTimer * 60 * 1000);

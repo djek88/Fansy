@@ -82,9 +82,7 @@
 
 								{% if question.adminTimer != null %}
 									<script>
-										document.addEventListener("DOMContentLoaded", function() {
-											initializeClock('timer{{ question.id }}', {{ question.countdown }});
-										});
+										initializeClock('timer{{ question.id }}', {{ question.countdown }});
 									</script>
 								{% endif %}
 							</tr>
