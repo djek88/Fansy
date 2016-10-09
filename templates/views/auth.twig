@@ -15,9 +15,9 @@
 				</p>
 				<div>
 					<div class="w-form">
-						<form class="form-nickname" id="wf-form-Nickname-Form" name="wf-form-Nickname-Form">
+						<form class="form-nickname" id="wf-form-Nickname-Form" name="wf-form-Nickname-Form" ng-submit="app.auth();">
 							<input autofocus="autofocus" class="textfield-nickname w-input" id="Nickname-2" maxlength="256" name="Nickname" placeholder="Enter your nickname" required="required" type="text">
-							<input type="button" ng-click="app.auth();" class="button-overlay w-button" data-wait="Please wait..." value="Start playing!">
+							<input type="submit" class="button-overlay w-button" data-wait="Please wait..." value="Start playing!">
 						</form>
 						<div class="form-success w-form-done">
 							<div class="text-basic">Thank you! Your submission has been received!</div>

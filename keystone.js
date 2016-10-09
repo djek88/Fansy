@@ -6,13 +6,10 @@ require('dotenv').config();
 var keystone = require('keystone');
 var Twig = require('twig');
 var io = require('socket.io');
-var Mixpanel = require('mixpanel');
 
 // Initialise Keystone with your project's configuration.
 // See http://keystonejs.com/guide/config for available options
 // and documentation.
-
-keystone.set('mixpanel', Mixpanel.init('c4b9a4c39383dbad6336bcca4b258778'));
 
 keystone.init({
 	'name': 'fansy.tv',

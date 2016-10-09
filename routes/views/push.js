@@ -13,7 +13,6 @@ module.exports = function(req, res) {
 	var streamNsp = keystone.get('io').nsps['/stream'];
 	var sid = req.params.sid;
 	var cookies = shared.parseCookies(req);
-	var mixpanel = keystone.get('mixpanel');
 
 	Stream.model.findById(sid).populate('streamer').exec(function(err, stream) {
 		locals.stream = stream;

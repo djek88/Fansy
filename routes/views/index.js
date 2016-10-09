@@ -8,7 +8,6 @@ exports = module.exports = function(req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	var cookies = parseCookies(req);
-	var mixpanel = keystone.get('mixpanel');
 
 	locals.streamSocketUrl = process.env.APP_DOMAIN + 'stream';
 	locals.mixpanel = process.env.MIXPANEL;

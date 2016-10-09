@@ -130,11 +130,11 @@ angular
 					app.first = Math.floor(new Date().getTime() / 1000);
 					app.question = data;
 
-					runQuestionTimer(data.timer);
+					runQuestionTimer(data);
 
 					mixpanel.track('question-showed', {
 						templateId: data.templateId,
-						game: data.game,
+						game: app.game,
 						distinct_id: getCookie('fansy.username')
 					});
 				});
@@ -184,7 +184,7 @@ angular
 			mixpanel.track('prediction-done', {
 				distinct_id: getCookie('fansy.username'),
 				templateId: app.question.templateId,
-				game: app.question.gameId,
+				game: app.game,
 				timer: app.question.timer - (Math.floor(new Date().getTime() / 1000) - app.first),
 				answer: answer
 			});
@@ -238,12 +238,20 @@ angular
 			}
 		}
 
-		function runQuestionTimer(secs) {
-			app.questionPoputTimer = secs - 1;
+		function runQuestionTimer(data) {
+			app.questionPoputTimer = data.timer - 1;
 
 			stopQuestionTimer();
 			app.questionPopupInterval = $interval(function() {
-				if (app.questionPoputTimer <= 1) return stopQuestionTimer();
+				if (app.questionPoputTimer <= 1) {
+					mixpanel.track('question-expire', {
+						templateId: data.templateId,
+						game: app.game,
+						distinct_id: getCookie('fansy.username')
+					});
+
+					return stopQuestionTimer();
+				} 
 
 				app.questionPoputTimer--;
 			}, 1000);
