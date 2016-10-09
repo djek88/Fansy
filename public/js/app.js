@@ -3,12 +3,11 @@ angular
 	.config(function($interpolateProvider) {
 		$interpolateProvider.startSymbol('{$').endSymbol('$}');
 	})
-	.controller('AppController', function($scope, $timeout, socketIO) {
+	.controller('AppController', function($scope, $timeout, $interval, socketIO) {
 		var app = this;
 
 		var socket = null;
 		app.leaders = [];
-		app.showQuestion = false;
 		app.answers = [];
 		app.timers = [];
 		app.activePredictions = [];
@@ -130,30 +129,20 @@ angular
 
 					app.first = Math.floor(new Date().getTime() / 1000);
 					app.question = data;
-					app.showQuestion = true;
+
+					runQuestionTimer(data.timer);
 
 					mixpanel.track('question-showed', {
 						templateId: data.templateId,
 						game: data.game,
 						distinct_id: getCookie('fansy.username')
 					});
-
-					$scope.$broadcast('timer-reset');
-					$scope.$broadcast('timer-add-cd-seconds', app.question.timer);
-
-					$timeout.cancel(app.questionTimeoutId);
-
-					app.questionTimeoutId = $timeout(function() {
-						app.showQuestion = false;
-					}, (app.question.timer - 1) * 1000);
 				});
 
 				socket.on("close_question", function(id) {
 					console.log("CLOSE_QUESTION", id);
 
-					if (app.showQuestion && app.question.id == id) {
-						app.showQuestion = false;
-					}
+					if (app.question.id == id) stopQuestionTimer();
 				});
 
 				socket.on("answer", function(answer) {
@@ -184,9 +173,7 @@ angular
 		};
 
 		app.answer = function(answer, answerText) {
-			$timeout.cancel(app.questionTimeoutId);
-
-			app.showQuestion = false;
+			stopQuestionTimer();
 
 			if (!answer) return;
 
@@ -249,5 +236,23 @@ angular
 			} else {
 				streamSection.style.width = app.isLeaderBoard ? '60%' : '100%';
 			}
+		}
+
+		function runQuestionTimer(secs) {
+			app.questionPoputTimer = secs - 1;
+
+			stopQuestionTimer();
+			app.questionPopupInterval = $interval(function() {
+				if (app.questionPoputTimer <= 1) return stopQuestionTimer();
+
+				app.questionPoputTimer--;
+			}, 1000);
+
+			app.showQuestion = true;
+		}
+
+		function stopQuestionTimer() {
+			$interval.cancel(app.questionPopupInterval);
+			app.showQuestion = false;
 		}
 	});

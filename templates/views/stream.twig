@@ -15,7 +15,7 @@
 			<div class="form-question w-form">
 				<form id="email-form" name="email-form" style="display: flex;">
 					<div class="div-question-timer">
-						<timer class="text-timer" countdown="1" interval="1000" ng-init="app.countdown=countdown">{$countdown$}</timer>
+						<div class="text-timer" ng-bind="app.questionPoputTimer"></div>
 						<div class="text-timer timerFind"></div>
 					</div>
 					<a ng-click="app.answer(1, '{{ stream.option1 }}')" class="button-question-1 w-button" href="#">{{ stream.option1 }}</a>

@@ -15,6 +15,7 @@ module.exports = function(io) {
 
 		socket.on('open', function(data) {
 			socket.token = data.token;
+			socket.questions = {};
 		});
 
 		socket.on('first', function(data) {
@@ -64,6 +65,10 @@ module.exports = function(io) {
 
 		socket.on('answerToQuestion', function (data) {
 			console.log('on answerToQuestion event');
+			if (socket.questions[data.questionId] &&
+				socket.questions[data.questionId].answered) return;
+
+			socket.questions[data.questionId] = {answered: true};
 
 			User.model.findOne({'token': data.token}).exec(function (err, user) {
 				if (err || !user) return;
