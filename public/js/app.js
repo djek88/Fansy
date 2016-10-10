@@ -14,6 +14,12 @@ angular
 		app.finishedPredictions = [];
 		app.token = getCookie('fansy.token');
 
+		if (!app.token) {
+			mixpanel.track('onb-auth-showed', {
+				distinct_id: 'anonymus'
+			});
+		}
+
 		$timeout(function() {
 			socket = socketIO.toStream(app.socketUrl);
 
@@ -27,10 +33,6 @@ angular
 						name: getCookie('fansy.username'),
 						email: getCookie('fansy.username') + "@fansy.tv",
 						created_at: Math.floor(new Date().getTime() / 1000)
-					});
-				} else {
-					mixpanel.track('onb-auth-showed', {
-						distinct_id: 'anonymus'
 					});
 				}
 
@@ -103,9 +105,7 @@ angular
 
 				socket.on("auth", function(data) {
 					if (data.type === 'error') {
-						mixpanel.track('onb-auth-error', {
-							distinct_id: data.username
-						});
+						mixpanel.track('onb-auth-error', {distinct_id: data.username});
 
 						$('.form-error').show();
 					}
