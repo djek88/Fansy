@@ -9,7 +9,7 @@
 			</div>
 		</div>
 
-		<div ng-show="app.showQuestion" id="question" class="animate-if overlay-question">
+		<div class="animate-if overlay-question" ng-show="app.showQuestion" id="question">
 			<div class="text-question">{$ app.question.message $}</div>
 
 			<div class="form-question w-form">
@@ -27,12 +27,10 @@
 			</div>
 		</div>
 
-
-		<!-- <a ng-click="app.toggleLeaderBoard()"  class="user-sidebar-expand w-inline-block" data-ix="expand-user-sidebar" href="#">
-			<img class="image-arrow" ng-show="!app.isLeaderBoard" data-ix="expand-user-sidebar" src="images/arrow2.png">
-			<img class="image-arrow" ng-show="app.isLeaderBoard" data-ix="collapse-user-sidebar" height="20" src="images/arrow.png">
-		</a> -->
-
+		<a class="user-sidebar-expand w-inline-block" ng-click="app.userSidebarExpand()" data-ix="expand-user-sidebar" href="#"><img class="image-arrow" data-ix="expand-user-sidebar" src="images/arrow2.png">
+		</a>
+		<a class="user-sidebar-collapse w-inline-block" ng-click="app.userSidebarCollapse()" data-ix="collapse-user-sidebar" href="#"><img class="image-arrow" data-ix="collapse-user-sidebar" height="20" src="images/arrow.png">
+		</a>
 
 		<div class="answers" ng-class="app.answers.length == 0 ? 'display-none' : ''">
 			<div ng-animate="'animate'" ng-repeat="answer in app.answers track by $index" class="overlay-notification animate">
@@ -58,17 +56,13 @@
 				id="twitch"></iframe>
 		</div>
 
-		<!-- Fullscreen expand -->
-		<a ng-click="app.toggleFullScreen();" ng-show="!app.fullscreen" class="linkblock-expand w-clearfix w-inline-block" data-ix="fullscreen-expand" href="#" id="fullscreen-expand">
-			<img class="image-fullscreen" sizes="20px" src="images/expand.png" srcset="images/expand.png 500w, images/expand.png 600w">
+		<a class="linkblock-expand w-clearfix w-inline-block" ng-click="app.fullscreenExpand()" data-ix="fullscreen-expand" href="#" id="fullscreen-expand"><img class="image-fullscreen" sizes="20px" src="images/expand.png" srcset="images/expand-p-500x500.png 500w, images/expand.png 600w">
 		</a>
-		<!-- Fullscreen collapse -->
-		<a ng-click="app.toggleFullScreen();" ng-show="app.fullscreen" class="linkblock-collapse w-clearfix w-inline-block" data-ix="fullscreen-collapse" href="#" id="fullscreen-collapse">
-			<img class="image-fullscreen" sizes="100vw" src="images/collapse.png" srcset="images/collapse.png 500w, images/collapse.png 599w">
+		<a class="linkblock-collapse w-clearfix w-inline-block" ng-click="app.fullscreenCollapse()" data-ix="fullscreen-collapse" href="#" id="fullscreen-collapse"><img class="image-fullscreen" sizes="100vw" src="images/collapse.png" srcset="images/collapse-p-500x501.png 500w, images/collapse.png 599w">
 		</a>
 	</div>
 
-	<div class="user-section" ng-show="app.isLeaderBoard" data-ix="expand-user-sidebar">
+	<div class="user-section" data-ix="expand-user-sidebar">
 		<div class="user-profile">
 			<div class="w-row">
 				<div class="column-profile w-col w-col-8 w-col-small-8 w-col-tiny-8">

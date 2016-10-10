@@ -4,6 +4,7 @@ var Prediction = keystone.list('Prediction');
 var randtoken = require('rand-token');
 
 var shared = require('../lib/shared');
+var resources = require('../resources');
 
 module.exports = function(io) {
 	var streaNsp = io.of('/stream');
@@ -42,25 +43,33 @@ module.exports = function(io) {
 
 		socket.on('auth', function (data) {
 			console.log('on auth event');
-			User.model.findOne({'username': data.username}).exec(function (err, user) {
-				if (user){
-					socket.emit('auth', {'type': 'error', 'username': data.username});
-				} else {
-					var newUser = new User.model({
-						username: data.username,
-						token: randtoken.generate(16)
-					});
+			getFreeName(function(err, userName) {
+				if (err) return socket.emit('auth', {'error': true});
 
-					newUser.save(function(err) {
-						socket.token = newUser.token;
-						socket.emit('auth', {
-							'type': 'success',
-							'token': newUser.token,
-							'username': data.username
-						});
+				new User.model({
+					username: userName,
+					token: randtoken.generate(16)
+				}).save(function(err, freshUser) {
+					socket.token = freshUser.token;
+
+					socket.emit('auth', {
+						'token': freshUser.token,
+						'username': freshUser.username
 					});
-				}
+				});
 			});
+
+			function getFreeName(cb) {
+				var userNames = resources.userNames;
+				var randIndex = Math.floor(Math.random() * userNames.length);
+				var randNumber = Math.floor(Math.random() * 10) + 1;
+				var userName = userNames[randIndex] + randNumber;
+
+				User.model.findOne({'username': userName}).exec(function (err, user) {
+					if (user) return getFreeName(cb);
+					cb(err, userName);
+				});
+			}
 		});
 
 		socket.on('answerToQuestion', function (data) {

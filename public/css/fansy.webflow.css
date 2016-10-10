@@ -47,6 +47,11 @@ body {
   padding-left: 20px;
 }
 
+.column-help-text {
+  padding-top: 30px;
+  padding-left: 20px;
+}
+
 .container-logo {
   padding-top: 40px;
 }
@@ -58,6 +63,7 @@ body {
   right: 0px;
   bottom: 0px;
   z-index: 2000;
+  display: block;
   background-color: rgba(38, 41, 50, .95);
 }
 
@@ -113,7 +119,7 @@ body {
 }
 
 .button-overlay {
-  position: absolute;
+  position: static;
   left: 220px;
   top: 0px;
   width: 160px;
@@ -207,6 +213,9 @@ body {
 }
 
 .div-stream-timer {
+  position: absolute;
+  top: 150px;
+  right: 0px;
   z-index: 2000;
   display: block;
   width: auto;
@@ -286,6 +295,7 @@ body {
 }
 
 .text-timer {
+  display: inline-block;
   font-family: Muli, sans-serif;
   color: #a0a7ab;
   font-size: 15px;
@@ -407,8 +417,8 @@ body {
   position: absolute;
   top: 0px;
   right: 0px;
-
   z-index: 2000;
+  display: none;
   width: 100px;
   height: 70px;
 }
@@ -428,6 +438,9 @@ body {
 }
 
 .overlay-notification {
+  position: absolute;
+  right: 20px;
+  bottom: 60px;
   z-index: 1500;
   display: block;
   width: 280px;
@@ -500,7 +513,6 @@ body {
   right: 5px;
   bottom: 5px;
   z-index: 1000;
-  width: 65px;
   padding: 10px;
   background-color: #000;
 }
@@ -515,6 +527,7 @@ body {
   right: 5px;
   bottom: 5px;
   z-index: 1000;
+  display: none;
   width: 65px;
   padding: 10px;
   background-color: #000;
@@ -551,9 +564,16 @@ body {
   text-align: center;
 }
 
+.div-overlay-button {
+  margin-top: 40px;
+}
+
 @media (max-width: 991px) {
   .container-help {
     margin-top: 120px;
+  }
+  .column-help-text {
+    padding-top: 0px;
   }
   .column-help-image {
     display: block;
@@ -578,6 +598,9 @@ body {
 @media (max-width: 767px) {
   .container-help {
     margin-top: 60px;
+  }
+  .column-help-image {
+    display: none;
   }
   .container-logo {
     padding-right: 5px;

@@ -104,16 +104,11 @@ angular
 				});
 
 				socket.on("auth", function(data) {
-					if (data.type === 'error') {
-						mixpanel.track('onb-auth-error', {distinct_id: data.username});
-
-						$('.form-error').show();
-					}
-
-					if (data.type === 'success') {
+					if (data.error) {
+						console.log('auth internal server error');
+						//mixpanel.track('onb-auth-error', {distinct_id: data.username});
+					} else {
 						mixpanel.track('onb-auth-done', {distinct_id: data.username});
-
-						$('.form-success').show();
 
 						setCookie('fansy.token', data.token);
 						setCookie('fansy.username', data.username);
@@ -169,7 +164,7 @@ angular
 			$('.form-success').hide();
 			$('.form-error').hide();
 
-			socket.emit("auth", {username: $('.textfield-nickname').val()});
+			socket.emit("auth");
 		};
 
 		app.answer = function(answer, answerText) {
@@ -206,38 +201,6 @@ angular
 			location.href = '/';
 		};
 
-		app.fullscreen = false;
-		app.toggleFullScreen = function() {
-			mixpanel.track(
-				(app.fullscreen ? 'ux-full-collapse' : 'ux-full-expand'),
-				{distinct_id: getCookie('fansy.username')}
-			);
-
-			app.fullscreen = !app.fullscreen;
-			recalculateStreamWidth();
-		}
-
-		app.isLeaderBoard = true;
-		app.toggleLeaderBoard = function() {
-			mixpanel.track(
-				(app.isLeaderBoard ? 'ux-sidebar-collapse' : 'ux-sidebar-expand'),
-				{distinct_id: getCookie('fansy.username')}
-			);
-
-			app.isLeaderBoard = !app.isLeaderBoard;
-			recalculateStreamWidth();
-		};
-
-		function recalculateStreamWidth() {
-			var streamSection = document.getElementsByClassName('stream-section')[0];
-
-			if (app.fullscreen) {
-				streamSection.style.width = app.isLeaderBoard ? '70%' : '100%';
-			} else {
-				streamSection.style.width = app.isLeaderBoard ? '60%' : '100%';
-			}
-		}
-
 		function runQuestionTimer(data) {
 			app.questionPoputTimer = data.timer - 1;
 
@@ -262,5 +225,31 @@ angular
 		function stopQuestionTimer() {
 			$interval.cancel(app.questionPopupInterval);
 			app.showQuestion = false;
+		}
+
+
+
+		app.userSidebarExpand = function() {
+			mixpanel.track('ux-sidebar-expand', {
+				distinct_id: getCookie('fansy.username')
+			});
+		}
+
+		app.userSidebarCollapse = function() {
+			mixpanel.track('ux-sidebar-collapse', {
+				distinct_id: getCookie('fansy.username')
+			});
+		}
+
+		app.fullscreenExpand = function() {
+			mixpanel.track('ux-full-expand', {
+				distinct_id: getCookie('fansy.username')
+			});
+		}
+
+		app.fullscreenCollapse = function() {
+			mixpanel.track('ux-full-collapse', {
+				distinct_id: getCookie('fansy.username')
+			});
 		}
 	});
