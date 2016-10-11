@@ -32,28 +32,25 @@
 					</thead>
 					<tbody>
 						{% for template in templates['Early'] %}
-							<tr>
+							<tr {% if template.onboarding == 'Yes' %} style="background-color: aliceblue;" {% endif %}>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
 							<tr class="divider"><td></td><td></td><td></td><td></td></tr>
 						{% for template in templates['Any'] %}
-							<tr>
+							<tr {% if template.onboarding == 'Yes' %} style="background-color: aliceblue;" {% endif %}>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
 							<tr class="divider"><td></td><td></td><td></td><td></td></tr>
 						{% for template in templates['Mid'] %}
-							<tr>
+							<tr {% if template.onboarding == 'Yes' %} style="background-color: aliceblue;" {% endif %}>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
-								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}

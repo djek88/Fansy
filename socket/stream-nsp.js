@@ -37,7 +37,7 @@ module.exports = function(io) {
 						templateId: question.template,
 						gameId: question.game._id
 					});
-				}), 5000);
+				}), 15000);
 
 				shared.getActivePredictions(user.id, data.streamId, function(err, predictions) {
 					socket.emit('active_predictions', predictions);
