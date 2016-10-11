@@ -13,16 +13,3 @@
 		{% include 'landing.twig' %}
 	{% endif %}
 {% endblock %}
-
-
-{% if not stream %}
-	{% block webflow %}
-		<link href="/css/landing.css" rel="stylesheet" type="text/css">
-		<link href="/css/landing.webflow.css" rel="stylesheet" type="text/css">
-	{% endblock %}
-
-	{% block webflowjs %}
-		<script src="/js/modernizr.js" type="text/javascript"></script>
-		<script src="/js/webflow.js" type="text/javascript"></script>
-	{% endblock %}
-{% endif %}

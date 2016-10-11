@@ -6,7 +6,7 @@ body {
 }
 
 .container-help {
-  margin-top: 150px;
+  margin-top: 120px;
 }
 
 .h1 {
@@ -14,6 +14,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   color: #fff;
   font-size: 52px;
+  line-height: 54px;
 }
 
 .text-help {
@@ -63,7 +64,7 @@ body {
   right: 0px;
   bottom: 0px;
   z-index: 2000;
-  display: block;
+  display: none;
   background-color: rgba(38, 41, 50, .95);
 }
 
@@ -86,6 +87,7 @@ body {
   font-family: Muli, sans-serif;
   color: #a0a7ab;
   font-size: 19px;
+  line-height: 26px;
   text-align: left;
 }
 
@@ -345,7 +347,7 @@ body {
 
 .body {
   height: 100%;
-  background-color: #1e2024;
+  background-color: #262932;
   font-family: Muli, sans-serif;
   color: #a0a7ab;
   font-size: 16px;
@@ -493,7 +495,7 @@ body {
 .link-basic {
   font-family: Muli, sans-serif;
   color: #8ec448;
-  font-size: 16px;
+  font-size: 19px;
 }
 
 .link-logout {
@@ -566,6 +568,37 @@ body {
 
 .div-overlay-button {
   margin-top: 40px;
+}
+
+.section-landing {
+  position: static;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #262932;
+}
+
+.column-landing-text {
+  padding-left: 15px;
+}
+
+.column-landing-image {
+  position: static;
+  text-align: center;
+}
+
+.text-caption {
+  font-family: Raleway, sans-serif;
+  color: #8ec448;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.section-social {
+  margin-top: 30px;
+  color: transparent;
 }
 
 @media (max-width: 991px) {

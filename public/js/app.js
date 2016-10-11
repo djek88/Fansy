@@ -80,11 +80,17 @@ angular
 				});
 
 				socket.on("active_predictions", function(activePreds) {
+					console.log('ON ACTIVE_PREDICTIONS');
 					app.activePredictions = activePreds;
+
+					updateIntercom();
 				});
 
 				socket.on("finished_predictions", function(finishedPreds) {
+					console.log('ON FINISHED_PREDICTIONS');
 					app.finishedPredictions = finishedPreds;
+
+					updateIntercom();
 				});
 
 				socket.on("timer", function(data) {
@@ -104,6 +110,8 @@ angular
 				});
 
 				socket.on("auth", function(data) {
+					console.log('ON AUTH');
+
 					if (data.error) {
 						console.log('auth internal server error');
 						//mixpanel.track('onb-auth-error', {distinct_id: data.username});
@@ -120,7 +128,7 @@ angular
 				});
 
 				socket.on("question", function(data) {
-					console.log("QUESTION", data);
+					console.log("ON QUESTION", data);
 
 					app.first = Math.floor(new Date().getTime() / 1000);
 					app.question = data;
@@ -135,13 +143,13 @@ angular
 				});
 
 				socket.on("close_question", function(id) {
-					console.log("CLOSE_QUESTION", id);
+					console.log("ON LOSE_QUESTION", id);
 
 					if (app.question.id == id) stopQuestionTimer();
 				});
 
 				socket.on("answer", function(answer) {
-					console.log("ANSWER", answer);
+					console.log("ON ANSWER", answer);
 
 					mixpanel.track('notification-showed', {distinct_id: getCookie('fansy.username')});
 
@@ -164,6 +172,7 @@ angular
 			$('.form-success').hide();
 			$('.form-error').hide();
 
+			console.log('EMIT AUTH');
 			socket.emit("auth");
 		};
 
@@ -173,9 +182,6 @@ angular
 			if (!answer) return;
 
 			twttr.conversion.trackPid('nvizu', {tw_sale_amount: 0, tw_order_quantity: 0});
-			var intercomData = {};
-			intercomData[app.game] = app.activePredictions.length + app.finishedPredictions.length;
-			window.Intercom('update', intercomData);
 			mixpanel.track('prediction-done', {
 				distinct_id: getCookie('fansy.username'),
 				templateId: app.question.templateId,
@@ -184,6 +190,7 @@ angular
 				answer: answer
 			});
 
+			console.log('EMIT ANSWERTOQUESTION');
 			socket.emit('answerToQuestion', {
 				answer: answer,
 				token: getCookie('fansy.token'),
@@ -227,7 +234,11 @@ angular
 			app.showQuestion = false;
 		}
 
-
+		function updateIntercom() {
+			var intercomData = {};
+			intercomData[app.game] = app.activePredictions.length + app.finishedPredictions.length;
+			window.Intercom('update', intercomData);
+		}
 
 		app.userSidebarExpand = function() {
 			mixpanel.track('ux-sidebar-expand', {

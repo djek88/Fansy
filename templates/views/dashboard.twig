@@ -39,7 +39,7 @@
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
-							<tr class="divider"><td></td><td></td><td></td></tr>
+							<tr class="divider"><td></td><td></td><td></td><td></td></tr>
 						{% for template in templates['Any'] %}
 							<tr>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
@@ -48,7 +48,7 @@
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
-							<tr class="divider"><td></td><td></td><td></td></tr>
+							<tr class="divider"><td></td><td></td><td></td><td></td></tr>
 						{% for template in templates['Mid'] %}
 							<tr>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
