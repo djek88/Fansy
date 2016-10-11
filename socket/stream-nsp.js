@@ -27,6 +27,18 @@ module.exports = function(io) {
 			User.model.findOne({'token': data.token}).exec(function (err, user) {
 				if (err || !user) return;
 
+				setTimeout(shared.getActiveOnboardQuestion.bind(null, user.id, data.streamId, function(err, question) {
+					if (!err && !question) return;
+
+					socket.emit('question', {
+						message: question.text,
+						timer: question.timer,
+						id: question.id,
+						templateId: question.template,
+						gameId: question.game._id
+					});
+				}), 5000);
+
 				shared.getActivePredictions(user.id, data.streamId, function(err, predictions) {
 					socket.emit('active_predictions', predictions);
 				});

@@ -68,11 +68,11 @@ module.exports = function(req, res) {
 					}
 
 					streamNsp.emit('question', {
-						message: text,
-						timer: locals.template.timer,
+						message: freshQuestion.text,
+						timer: freshQuestion.timer,
 						id: freshQuestion.id,
-						templateId: template.id,
-						gameId: template.game.id
+						templateId: freshQuestion.template,
+						gameId: freshQuestion.game._id
 					});
 
 					res.redirect('/dashboard/' + locals.stream.id + '/error/0');

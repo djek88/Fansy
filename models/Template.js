@@ -16,6 +16,7 @@ Template.add({
 	game: { type: Types.Relationship, ref: 'Game' },
 	type: { type: Types.Select, options: 'SOLO, TEAM', default: 'SOLO', required: true, index: true },
 	stage: { type: Types.Select, options: 'Early, Any, Mid', default: 'Any', required: true, index: true },
+	onboarding: { type: Types.Select, options: 'Yes, No', default: 'No', required: true, index: true },
 	created_at: { type: Types.Datetime, default: Date.now },
 	updated_at: { type: Types.Datetime, default: Date.now },
 });
@@ -29,5 +30,5 @@ Template.schema.pre('save', function(next) {
     next();
 });
 
-Template.defaultColumns = 'text, timer, game, type, stage, created_at, updated_at';
+Template.defaultColumns = 'text, timer, game, type, stage, onboarding, created_at, updated_at';
 Template.register();

@@ -2,11 +2,13 @@ $(document).on('keypress', '.editable', function(e) {
 	if (e.which == 13) {
 		$(this).blur();
 		console.log($(this).html());
+
 		var data = {
 			id: $(this).attr('data-id'),
 			value: $(this).html(),
 			type: $(this).attr('data-type'),
-		}
+		};
+
 		$.ajax({
 			type: "POST",
 			url: '/dashboard/template',

@@ -26,6 +26,7 @@
 						<tr>
 							<th>Text</th>
 							<th>Timer</th>
+							<th>Onboard</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -34,6 +35,7 @@
 							<tr>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
@@ -42,6 +44,7 @@
 							<tr>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
@@ -50,6 +53,7 @@
 							<tr>
 								<td class="editable" data-type="text" data-id={{ template._id }} contenteditable="true">{{ template.text }}</td>
 								<td class="editable" data-type="timer" data-id={{ template._id }} contenteditable="true">{{ template.timer }}</td>
+								<td class="editable" data-type="onboarding" data-id={{ template._id }} contenteditable="true">{{ template.onboarding }}</td>
 								<td><a href="/dashboard/{{ stream.id }}/push/{{ template.id }}" class="btn btn-default">Push</a></td>
 							</tr>
 						{% endfor %}
