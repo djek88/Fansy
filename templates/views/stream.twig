@@ -66,7 +66,7 @@
 		<div class="user-profile">
 			<div class="w-row">
 				<div class="column-profile w-col w-col-8 w-col-small-8 w-col-tiny-8">
-					<div class="text-player" ng-init="app.username='{{ user.username }}'">{{ user.username }}</div>
+					<div class="text-player" ng-init="app.username='{{ user.username|escape('js') }}'">{{ user.username }}</div>
 				</div>
 				<div class="column-profile w-clearfix w-col w-col-4 w-col-small-4 w-col-tiny-4">
 					<a ng-click="app.logout()" class="link-logout" href="">Logout</a>

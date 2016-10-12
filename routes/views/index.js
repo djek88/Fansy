@@ -11,6 +11,7 @@ exports = module.exports = function(req, res) {
 
 	locals.streamSocketUrl = process.env.APP_DOMAIN + 'stream';
 	locals.mixpanel = process.env.MIXPANEL;
+	locals.intercom = process.env.INTERCOM;
 
 	view.on('init', function (next) {
 		Stream.model.findOne({'status': 'live'}).populate('game').exec(function (err, stream) {

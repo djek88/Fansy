@@ -15,7 +15,7 @@ angular
 		app.token = getCookie('fansy.token');
 
 		if (!app.token) {
-			mixpanel.track('onb-auth-showed', {distinct_id: 'anonymus'});
+			mixpanel.track('onb-auth-showed');
 		}
 
 		$timeout(function() {
@@ -27,12 +27,14 @@ angular
 					socket.emit("first", {streamId: app.stream, token: app.token});
 
 					Intercom('boot', {
-						//app_id: 'e61khwbx', // for prod
-						app_id: 'dk1peg8r', // for dev
+						app_id: app.intercom,
 						name: getCookie('fansy.username'),
 						email: getCookie('fansy.username') + "@fansy.tv",
 						created_at: Math.floor(new Date().getTime() / 1000)
 					});
+
+					mixpanel.identify(app.token);
+					mixpanel.people.set('name', getCookie('fansy.username'));
 				}
 
 				socket.on("leader", function(predictions) {
@@ -78,18 +80,22 @@ angular
 					}
 				});
 
-				socket.on("active_predictions", function(activePreds) {
-					console.log('ON ACTIVE_PREDICTIONS', activePreds.length);
-					app.activePredictions = activePreds;
+				socket.on("user_predictions", function(predictions) {
+					app.activePredictions = predictions.filter(function(pred) {
+						return pred.status === 'active';
+					});
 
-					updateIntercom();
-				});
+					app.finishedPredictions = predictions.filter(function(pred) {
+						return pred.status !== 'active';
+					});
 
-				socket.on("finished_predictions", function(finishedPreds) {
-					console.log('ON FINISHED_PREDICTIONS', finishedPreds.length);
-					app.finishedPredictions = finishedPreds;
+					console.log('ON USER_PREDICTIONS : ' + predictions.length + ' active: ' + app.activePredictions.length + ' finished: ' + app.finishedPredictions.length);
 
-					updateIntercom();
+
+					var data = {};
+					data[app.game] = predictions.length;
+					mixpanel.people.set(data);
+					Intercom('update', data);
 				});
 
 				socket.on("timer", function(data) {
@@ -113,9 +119,9 @@ angular
 
 					if (data.error) {
 						console.log('auth internal server error');
-						//mixpanel.track('onb-auth-error', {distinct_id: data.username});
 					} else {
-						mixpanel.track('onb-auth-done', {distinct_id: data.username});
+						mixpanel.alias(data.token);
+						mixpanel.track('onb-auth-done');
 
 						setCookie('fansy.token', data.token);
 						setCookie('fansy.username', data.username);
@@ -129,16 +135,19 @@ angular
 				socket.on("question", function(data) {
 					console.log("ON QUESTION", data);
 
+					new Audio('/audio/question.mp3').play();
+
 					app.first = Math.floor(new Date().getTime() / 1000);
 					app.question = data;
 
 					runQuestionTimer(data);
 
-					mixpanel.track('question-showed', {
+					var data = {
 						templateId: data.templateId,
-						game: app.game,
-						distinct_id: getCookie('fansy.username')
-					});
+						game: app.game
+					};
+					mixpanel.track('question-showed', data);
+					Intercom('trackEvent', 'question-showed', data);
 				});
 
 				socket.on("close_question", function(id) {
@@ -150,7 +159,8 @@ angular
 				socket.on("answer", function(answer) {
 					console.log("ON ANSWER", answer);
 
-					mixpanel.track('notification-showed', {distinct_id: getCookie('fansy.username')});
+					mixpanel.track('notification-showed');
+					Intercom('trackEvent', 'notification-showed');
 
 					app.answers.unshift(answer);
 
@@ -180,14 +190,15 @@ angular
 
 			if (!answer) return;
 
-			twttr.conversion.trackPid('nvizu', {tw_sale_amount: 0, tw_order_quantity: 0});
-			mixpanel.track('prediction-done', {
-				distinct_id: getCookie('fansy.username'),
+			var data = {
 				templateId: app.question.templateId,
 				game: app.game,
 				timer: app.question.timer - (Math.floor(new Date().getTime() / 1000) - app.first),
 				answer: answer
-			});
+			};
+			mixpanel.track('prediction-done', data);
+			Intercom('trackEvent', 'prediction-done', data);
+			twttr.conversion.trackPid('nvizu', {tw_sale_amount: 0, tw_order_quantity: 0});
 
 			console.log('EMIT ANSWERTOQUESTION');
 			socket.emit('answerToQuestion', {
@@ -213,11 +224,12 @@ angular
 			stopQuestionTimer();
 			app.questionPopupInterval = $interval(function() {
 				if (app.questionPoputTimer <= 1) {
-					mixpanel.track('question-expire', {
+					var dataForAnalytics = {
 						templateId: data.templateId,
-						game: app.game,
-						distinct_id: getCookie('fansy.username')
-					});
+						game: app.game
+					};
+					/*mixpanel.track('question-expire', dataForAnalytics);
+					Intercom('trackEvent', 'question-expire', dataForAnalytics);*/
 
 					return stopQuestionTimer();
 				} 
@@ -233,34 +245,23 @@ angular
 			app.showQuestion = false;
 		}
 
-		function updateIntercom() {
-			var intercomData = {};
-			intercomData[app.game] = app.activePredictions.length + app.finishedPredictions.length;
-			console.log('UPDATE INTERCOM: ', intercomData);
-			Intercom('update', intercomData);
-		}
-
 		app.userSidebarExpand = function() {
-			mixpanel.track('ux-sidebar-expand', {
-				distinct_id: getCookie('fansy.username')
-			});
+			mixpanel.track('ux-sidebar-expand');
+			Intercom('trackEvent', 'ux-sidebar-expand');
 		}
 
 		app.userSidebarCollapse = function() {
-			mixpanel.track('ux-sidebar-collapse', {
-				distinct_id: getCookie('fansy.username')
-			});
+			mixpanel.track('ux-sidebar-collapse');
+			Intercom('trackEvent', 'ux-sidebar-collapse');
 		}
 
 		app.fullscreenExpand = function() {
-			mixpanel.track('ux-full-expand', {
-				distinct_id: getCookie('fansy.username')
-			});
+			mixpanel.track('ux-full-expand');
+			Intercom('trackEvent', 'ux-full-expand');
 		}
 
 		app.fullscreenCollapse = function() {
-			mixpanel.track('ux-full-collapse', {
-				distinct_id: getCookie('fansy.username')
-			});
+			mixpanel.track('ux-full-collapse');
+			Intercom('trackEvent', 'ux-full-collapse');
 		}
 	});

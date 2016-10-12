@@ -59,12 +59,8 @@ module.exports = function (req, res) {
 								User.model.findOne({'token': userToken}).exec(function (err, user) {
 									if (err || !user) return;
 
-									shared.getActivePredictions(user.id, sid, function(err, predictions) {
-										socket.emit('active_predictions', predictions);
-									});
-
-									shared.getFinishedPredictions(user.id, sid, function(err, predictions) {
-										socket.emit('finished_predictions', predictions);
+									shared.getUserPredictions(user.id, sid, function(err, predictions) {
+										socket.emit('user_predictions', predictions);
 									});
 
 									shared.getTimers(user.id, sid, function(err, timers) {
