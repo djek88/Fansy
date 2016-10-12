@@ -15,9 +15,7 @@ angular
 		app.token = getCookie('fansy.token');
 
 		if (!app.token) {
-			mixpanel.track('onb-auth-showed', {
-				distinct_id: 'anonymus'
-			});
+			mixpanel.track('onb-auth-showed', {distinct_id: 'anonymus'});
 		}
 
 		$timeout(function() {
@@ -28,8 +26,9 @@ angular
 					socket.emit("open", {token: app.token});
 					socket.emit("first", {streamId: app.stream, token: app.token});
 
-					window.Intercom('boot', {
-						app_id: 'e61khwbx',
+					Intercom('boot', {
+						//app_id: 'e61khwbx', // for prod
+						app_id: 'dk1peg8r', // for dev
 						name: getCookie('fansy.username'),
 						email: getCookie('fansy.username') + "@fansy.tv",
 						created_at: Math.floor(new Date().getTime() / 1000)
@@ -80,14 +79,14 @@ angular
 				});
 
 				socket.on("active_predictions", function(activePreds) {
-					console.log('ON ACTIVE_PREDICTIONS');
+					console.log('ON ACTIVE_PREDICTIONS', activePreds.length);
 					app.activePredictions = activePreds;
 
 					updateIntercom();
 				});
 
 				socket.on("finished_predictions", function(finishedPreds) {
-					console.log('ON FINISHED_PREDICTIONS');
+					console.log('ON FINISHED_PREDICTIONS', finishedPreds.length);
 					app.finishedPredictions = finishedPreds;
 
 					updateIntercom();
@@ -237,7 +236,8 @@ angular
 		function updateIntercom() {
 			var intercomData = {};
 			intercomData[app.game] = app.activePredictions.length + app.finishedPredictions.length;
-			window.Intercom('update', intercomData);
+			console.log('UPDATE INTERCOM: ', intercomData);
+			Intercom('update', intercomData);
 		}
 
 		app.userSidebarExpand = function() {
