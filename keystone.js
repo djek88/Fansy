@@ -37,10 +37,10 @@ keystone.import('models');
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
 var env = process.env;
-var isProduction = process.env.NODE_ENV === 'production';
+var isProduction = keystone.get('env') === 'production';
 
 keystone.set('locals', {
-	env: env.NODE_ENV,
+	env: keystone.get('env'),
 	isProduction: isProduction,
 	mixpanel: isProduction ? env.MIXPANEL_PROD : env.MIXPANEL_DEV,
 	intercom: isProduction ? env.INTERCOM_PROD : env.INTERCOM_DEV,
