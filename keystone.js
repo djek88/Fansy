@@ -36,9 +36,17 @@ keystone.import('models');
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
+var env = process.env;
+var isProduction = process.env.NODE_ENV === 'production';
+
 keystone.set('locals', {
+	env: env.NODE_ENV,
+	isProduction: isProduction,
+	mixpanel: isProduction ? env.MIXPANEL_PROD : env.MIXPANEL_DEV,
+	intercom: isProduction ? env.INTERCOM_PROD : env.INTERCOM_DEV,
+	streamSocketUrl: isProduction ? env.APP_DOMAIN + 'stream' : 'http://' + env.IP + ':' + env.PORT + '/stream',
+
 	_: require('lodash'),
-	env: keystone.get('env'),
 	utils: keystone.utils,
 	editable: keystone.content.editable,
 });
@@ -57,6 +65,5 @@ keystone.set('nav', {
 keystone.start({
 	onHttpServerCreated: function() {
 		keystone.set('io', require('./socket')(keystone.httpServer));
-		keystone.set('users', {});
 	}
 });

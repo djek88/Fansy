@@ -9,10 +9,6 @@ exports = module.exports = function(req, res) {
 	var locals = res.locals;
 	var cookies = parseCookies(req);
 
-	locals.streamSocketUrl = process.env.APP_DOMAIN + 'stream';
-	locals.mixpanel = process.env.MIXPANEL;
-	locals.intercom = process.env.INTERCOM;
-
 	view.on('init', function (next) {
 		Stream.model.findOne({'status': 'live'}).populate('game').exec(function (err, stream) {
 			if (err || !stream) return next(err);

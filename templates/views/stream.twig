@@ -50,10 +50,11 @@
 		</div>
 
 		<div class="twitch-embed w-embed w-iframe">
-			<iframe src="http://player.twitch.tv/?channel={{ stream.url }}"
+			<iframe src="http://player.twitch.tv/?channel={{ stream.url }}&autoplay={{ isProduction }}"
 				frameborder="0"
 				scrolling="no"
-				id="twitch"></iframe>
+				id="twitch">
+			</iframe>
 		</div>
 
 		<a class="linkblock-expand w-clearfix w-inline-block" ng-click="app.fullscreenExpand()" data-ix="fullscreen-expand" href="#" id="fullscreen-expand"><img class="image-fullscreen" sizes="20px" src="images/expand.png" srcset="images/expand-p-500x500.png 500w, images/expand.png 600w">

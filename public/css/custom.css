@@ -58,7 +58,10 @@
 }
 
 .overlay-notification {
-  margin-top: 20px
+  position: initial;
+  margin-top: 20px;
+  margin-right: initial;
+  margin-left: initial;
 }
 
 .overlay-auth {

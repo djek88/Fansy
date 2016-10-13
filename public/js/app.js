@@ -86,14 +86,28 @@ angular
 					});
 
 					app.finishedPredictions = predictions.filter(function(pred) {
-						return pred.status !== 'active';
+						return pred.status !== 'active' && pred.status !== 'cancelled';
 					});
 
-					console.log('ON USER_PREDICTIONS : ' + predictions.length + ' active: ' + app.activePredictions.length + ' finished: ' + app.finishedPredictions.length);
+					var winRate = 0;
+					var score = 0;
+					// Calculate winrate and score
+					if (app.finishedPredictions.length) {
+						var wonGamesCount = app.finishedPredictions.filter(function(e) {
+							score += e.status === 'true' ? 2000 : -2000;
 
+							return e.status === 'true';
+						}).length;
+
+						winRate = Math.floor(wonGamesCount / app.finishedPredictions.length * 100);
+					}
+
+					console.log('ON USER_PREDICTIONS: ' + predictions.length + '| active: ' + app.activePredictions.length + '| finished: ' + app.finishedPredictions.length + '| winrate: ' + winRate + '| score: ' + score);
 
 					var data = {};
 					data[app.game] = predictions.length;
+					data['winrate'] = winRate  + '%';
+					data['score'] = score;
 					mixpanel.people.set(data);
 					Intercom('update', data);
 				});

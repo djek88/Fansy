@@ -9,8 +9,6 @@ var resources = require('../resources');
 module.exports = function(io) {
 	var streaNsp = io.of('/stream');
 
-	var users = keystone.get('users');
-
 	streaNsp.on('connection', function(socket) {
 		console.log('USER CONNECTED to stream nsp, connected sockets:', Object.keys(streaNsp.connected).length);
 
