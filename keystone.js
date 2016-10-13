@@ -44,7 +44,7 @@ keystone.set('locals', {
 	isProduction: isProduction,
 	mixpanel: isProduction ? env.MIXPANEL_PROD : env.MIXPANEL_DEV,
 	intercom: isProduction ? env.INTERCOM_PROD : env.INTERCOM_DEV,
-	streamSocketUrl: isProduction ? env.APP_DOMAIN + 'stream' : 'http://' + env.IP + ':' + env.PORT + '/stream',
+	streamSocketUrl: (isProduction ? env.APP_DOMAIN : env.IP + ':' + env.PORT + '/') + 'stream',
 
 	_: require('lodash'),
 	utils: keystone.utils,

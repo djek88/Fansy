@@ -44,7 +44,7 @@ keystone.set('500', function(err, req, res, next) {
 
 // Import Route Controllers
 var routes = {
-	views: importRoutes('./views'),
+	views: importRoutes('./views')
 };
 
 // Setup Route Bindings
@@ -58,6 +58,8 @@ exports = module.exports = function (app) {
 	app.get('/dashboard/:sid/finish', middleware.requireUser, routes.views.finish);
 	app.get('/dashboard/:sid/start', middleware.requireUser, routes.views.start);
 	app.get('/dashboard/:sid/push/:id', middleware.requireUser, routes.views.push);
+	// send to sockets refresh event
+	app.get('/dashboard/:sid/refresh', routes.views.refresh);
 	// route for handle admin answer for question
 	app.get('/dashboard/:sid/question/:type/:id', middleware.requireUser, routes.views.question);
 

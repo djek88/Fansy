@@ -14,9 +14,10 @@
 		<h2>
 			<a href="/dashboard"><</a>
 			{{ game }} - {{ stream.streamer.name }}{% if stream.status == 'live' %} - live {% endif %}
-			{% if error %} <p style="color:red;">There is an active stream. Start banned</p> {% endif %}
+			{% if error %} <p style="color: red;">There is an active stream. Start banned</p> {% endif %}
 			{% if stream.status == 'new' %} - <a href="/dashboard/{{ stream.id }}/start" class="btn btn-default">Start</a> {% endif %}
 			{% if stream.status == 'live' %} - <a href="/dashboard/{{ stream.id }}/finish" class="btn btn-default">Finish</a> {% endif %}
+			<a href="/dashboard/{{ stream.id }}/refresh" class="btn btn-default">Refresh</a>
 		</h2>
 		<div class="row">
 			<div class="col-sm-5">

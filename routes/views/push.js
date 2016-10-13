@@ -1,5 +1,4 @@
 var keystone = require('keystone');
-var async = require('async');
 var Template = keystone.list('Template');
 var Question = keystone.list('Question');
 var Stream = keystone.list('Stream');
@@ -8,22 +7,15 @@ var request = require('superagent');
 var shared = require('../../lib/shared');
 
 module.exports = function(req, res) {
-	var view = new keystone.View(req, res);
-	var locals = res.locals;
 	var streamNsp = keystone.get('io').nsps['/stream'];
 	var sid = req.params.sid;
-	var cookies = shared.parseCookies(req);
 
 	Stream.model.findById(sid).populate('streamer').exec(function(err, stream) {
-		locals.stream = stream;
-
 		Template.model.findById(req.params.id)
 			.populate('game')
 			.exec(function(err, template) {
 				if (err) return res.err();
 				if (!template) return res.notfound();
-
-				locals.template = template;
 
 				var re = /\'(.*)\'/i;
 				var reGoal = /\*(.*)\*/i;
@@ -31,7 +23,7 @@ module.exports = function(req, res) {
 				var adminTimer = null;
 				var goal = null;
 				var timing = false;
-				var text = locals.template.text.replace(/%.*?%/, locals.stream.streamer.name);
+				var text = template.text.replace(/%.*?%/, stream.streamer.name);
 
 				if (text.match(re) && text.match(re)[1]) {
 					questionTimer = text.match(re)[1];
@@ -50,10 +42,10 @@ module.exports = function(req, res) {
 
 				new Question.model({
 					text: text,
-					timer: locals.template.timer,
-					template: locals.template.id,
-					stream: locals.stream.id,
-					game: locals.template.game,
+					timer: template.timer,
+					template: template.id,
+					stream: stream.id,
+					game: template.game,
 					status: 'active',
 					adminTimer: adminTimer,
 					goal: goal,
@@ -75,7 +67,7 @@ module.exports = function(req, res) {
 						gameId: freshQuestion.game._id
 					});
 
-					res.redirect('/dashboard/' + locals.stream.id + '/error/0');
+					res.redirect('/dashboard/' + stream.id + '/error/0');
 				});
 			});
 	});

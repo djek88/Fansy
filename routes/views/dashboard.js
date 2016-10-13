@@ -1,11 +1,10 @@
 var keystone = require('keystone');
-var async = require('async');
 var Template = keystone.list('Template');
 var Question = keystone.list('Question');
 var Stream = keystone.list('Stream');
 var Game = keystone.list('Game');
 
-exports = module.exports = function (req, res) {
+module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	var sid = req.params.sid;
@@ -25,15 +24,15 @@ exports = module.exports = function (req, res) {
 
 			locals.stream = stream;
 
-			Game.model.findById(locals.stream.game).exec(function (err, game) {
+			Game.model.findById(stream.game).exec(function (err, game) {
 				if (err) return res.err(err);
 				if (!game) return res.notfound();
 
 				locals.game = game.game;
 
 				Template.model.find()
-					.where('game', locals.stream.game)
-					.where('type', locals.stream.type)
+					.where('game', stream.game)
+					.where('type', stream.type)
 					.sort('-updated_at')
 					.exec(function (err, templates) {
 						if (err) return res.err(err);
@@ -43,7 +42,7 @@ exports = module.exports = function (req, res) {
 						});
 
 						Question.model.find()
-							.where('stream', locals.stream.id)
+							.where('stream', stream.id)
 							.where('status', 'active')
 							.sort('-updated_at')
 							.exec(function (err, questions) {

@@ -167,7 +167,13 @@ angular
 				socket.on("close_question", function(id) {
 					console.log("ON LOSE_QUESTION", id);
 
-					if (app.question.id == id) stopQuestionTimer();
+					if (app.question && app.question.id == id) stopQuestionTimer();
+				});
+
+				socket.on("refresh_page", function() {
+					console.log("ON REFRESH_PAGE");
+
+					location.reload(true);
 				});
 
 				socket.on("answer", function(answer) {
