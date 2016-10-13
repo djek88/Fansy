@@ -114,7 +114,7 @@ module.exports = function(io) {
 		});
 
 		socket.on('disconnect', function() {
-			console.log('SOCKET DISCONNECT');
+			console.log('SOCKET DISCONNECT, connected sockets:', Object.keys(streaNsp.connected).length);
 		});
 
 		socket.onclose = function onclose(reason) {
