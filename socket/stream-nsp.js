@@ -37,8 +37,18 @@ module.exports = function(io) {
 					});
 				}), 15000);
 
-				shared.getUserPredictions(user.id, data.streamId, function(err, predictions) {
-					socket.emit('user_predictions', predictions);
+				shared.getUserPredictions(user.id, function(err, predictions) {
+					if (err) return;
+
+					var streamPredicitons = predictions.filter(function(pred) {
+						return pred.stream == data.streamId;
+					});
+					socket.emit('cur_stream_user_predictions', streamPredicitons);
+
+					shared.getUserStatistic(predictions, function(err, data) {
+						if (err) return;
+						socket.emit('user_statistic', data);
+					});
 				});
 
 				shared.getTimers(user.id, data.streamId, function(err, timers) {
@@ -102,8 +112,18 @@ module.exports = function(io) {
 							streaNsp.emit('leader', predictions);
 						});
 
-						shared.getUserPredictions(user.id, data.streamId, function(err, predictions) {
-							socket.emit('user_predictions', predictions);
+						shared.getUserPredictions(user.id, function(err, predictions) {
+							if (err) return;
+
+							var streamPredicitons = predictions.filter(function(pred) {
+								return pred.stream == data.streamId;
+							});
+							socket.emit('cur_stream_user_predictions', streamPredicitons);
+
+							shared.getUserStatistic(predictions, function(err, data) {
+								if (err) return;
+								socket.emit('user_statistic', data);
+							});
 						});
 
 						shared.getTimers(user.id, data.streamId, function(err, timers) {

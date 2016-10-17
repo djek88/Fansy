@@ -45,8 +45,18 @@ module.exports = function (req, res) {
 								User.model.findOne({'token': socket.token}).exec(function (err, user) {
 									if (err || !user) return;
 
-									shared.getUserPredictions(user.id, sid, function(err, predictions) {
-										socket.emit('user_predictions', predictions);
+									shared.getUserPredictions(user.id, function(err, predictions) {
+										if (err) return;
+
+										var streamPredicitons = predictions.filter(function(pred) {
+											return pred.stream == sid;
+										});
+										socket.emit('cur_stream_user_predictions', streamPredicitons);
+
+										shared.getUserStatistic(predictions, function(err, data) {
+											if (err) return;
+											socket.emit('user_statistic', data);
+										});
 									});
 
 									shared.getTimers(user.id, sid, function(err, timers) {

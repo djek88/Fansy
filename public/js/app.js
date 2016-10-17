@@ -37,7 +37,7 @@ angular
 					mixpanel.people.set('name', getCookie('fansy.username'));
 				}
 
-				socket.on("leader", function(predictions) {
+				socket.on('leader', function(predictions) {
 					console.log('ON LEADER');
 
 					var usernames = predictions.map(function(e) {
@@ -80,7 +80,9 @@ angular
 					}
 				});
 
-				socket.on("user_predictions", function(predictions) {
+				socket.on('cur_stream_user_predictions', function(predictions) {
+					console.log('CUR_STREAM_USER_PREDICTIONS', predictions);
+
 					app.activePredictions = predictions.filter(function(pred) {
 						return pred.status === 'active';
 					});
@@ -88,31 +90,16 @@ angular
 					app.finishedPredictions = predictions.filter(function(pred) {
 						return pred.status !== 'active' && pred.status !== 'cancelled';
 					});
+				});
 
-					var winRate = 0;
-					var score = 0;
-					// Calculate winrate and score
-					if (app.finishedPredictions.length) {
-						var wonGamesCount = app.finishedPredictions.filter(function(e) {
-							score += e.status === 'true' ? 2000 : -2000;
+				socket.on('user_statistic', function(data) {
+					console.log('USER_STATISTIC', data);
 
-							return e.status === 'true';
-						}).length;
-
-						winRate = Math.floor(wonGamesCount / app.finishedPredictions.length * 100);
-					}
-
-					console.log('ON USER_PREDICTIONS: ' + predictions.length + '| active: ' + app.activePredictions.length + '| finished: ' + app.finishedPredictions.length + '| winrate: ' + winRate + '| score: ' + score);
-
-					var data = {};
-					data[app.game] = predictions.length;
-					data['winrate'] = winRate  + '%';
-					data['score'] = score;
 					mixpanel.people.set(data);
 					Intercom('update', data);
 				});
 
-				socket.on("timer", function(data) {
+				socket.on('timer', function(data) {
 					console.log('ON TIMER', data);
 
 					app.timers = data.timers && data.timers.reverse();
@@ -128,7 +115,7 @@ angular
 					$scope.$broadcast('timer-start');
 				});
 
-				socket.on("auth", function(data) {
+				socket.on('auth', function(data) {
 					console.log('ON AUTH');
 
 					if (data.error) {
@@ -146,7 +133,7 @@ angular
 					}
 				});
 
-				socket.on("question", function(data) {
+				socket.on('question', function(data) {
 					console.log("ON QUESTION", data);
 
 					new Audio('/audio/question.mp3').play();
@@ -164,19 +151,19 @@ angular
 					Intercom('trackEvent', 'question-showed', data);
 				});
 
-				socket.on("close_question", function(id) {
+				socket.on('close_question', function(id) {
 					console.log("ON LOSE_QUESTION", id);
 
 					if (app.question && app.question.id == id) stopQuestionTimer();
 				});
 
-				socket.on("refresh_page", function() {
+				socket.on('refresh_page', function() {
 					console.log("ON REFRESH_PAGE");
 
 					location.reload(true);
 				});
 
-				socket.on("answer", function(answer) {
+				socket.on('answer', function(answer) {
 					console.log("ON ANSWER", answer);
 
 					mixpanel.track('notification-showed');
